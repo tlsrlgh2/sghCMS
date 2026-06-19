@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "PowerShell(& \"C:\\\\Program Files\\\\Eclipse Adoptium\\\\jdk-21.0.11.10-hotspot\\\\bin\\\\javap.exe\" -c -cp \"C:\\\\Users\\\\User\\\\.m2\\\\repository\\\\org\\\\egovframe\\\\rte\\\\egovframe-rte-fdl-crypto\\\\5.0.0\\\\egovframe-rte-fdl-crypto-5.0.0.jar\" org.egovframe.rte.fdl.crypto.impl.EgovARIACryptoServiceImpl 2>&1 | Select-Object -First 80)",
-      "PowerShell(& \"C:\\\\Program Files\\\\Eclipse Adoptium\\\\jdk-21.0.11.10-hotspot\\\\bin\\\\javap.exe\" -c -cp \"C:\\\\Users\\\\User\\\\.m2\\\\repository\\\\org\\\\egovframe\\\\rte\\\\egovframe-rte-fdl-crypto\\\\5.0.0\\\\egovframe-rte-fdl-crypto-5.0.0.jar\" org.egovframe.rte.fdl.crypto.EgovPasswordEncoder 2>&1)"
-    ]
-  }
-}

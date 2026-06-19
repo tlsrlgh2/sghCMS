@@ -6,6 +6,10 @@ target/
 .project
 .settings/
 .metadata/
+.factorypath
+
+# Claude Code
+.claude/
 
 # IntelliJ
 .idea/
