@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemesh>
+    <!-- 어드민 레이아웃 -->
+    <mapping path="/admin/*" decorator="/WEB-INF/jsp/layout/admin/layout.jsp"/>
+
+    <!-- 사용자 레이아웃 -->
+    <mapping path="/user/*"  decorator="/WEB-INF/jsp/layout/user/layout.jsp"/>
+
+    <!-- 레이아웃 제외 경로 (로그인, 에러, Ajax 등) -->
+    <mapping path="/uat/uia/*" exclude="true"/>
+    <mapping path="/cmm/error/*" exclude="true"/>
+</sitemesh>

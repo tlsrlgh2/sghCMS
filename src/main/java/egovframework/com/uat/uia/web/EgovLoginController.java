@@ -311,16 +311,13 @@ public class EgovLoginController {
 		 * model.addAttribute("list_headmenu", list_headmenu);
 		 */
 
-		// 3. 메인 페이지 이동
-		String mainPage = Globals.MAIN_PAGE;
-
-		LOGGER.debug("Globals.MAIN_PAGE > " + Globals.MAIN_PAGE);
-		LOGGER.debug("mainPage > {}", mainPage);
-
-		if (mainPage.startsWith("/")) {
-			return "forward:" + mainPage;
+		// 3. 사용자 유형별 메인 페이지 분기
+		// USR(업무사용자) → 어드민 대시보드 / GNR(일반), ENT(기업) → 사용자 메인
+		String userSe = user.getUserSe();
+		if ("USR".equals(userSe)) {
+			return "redirect:/admin/dashboard.do";
 		} else {
-			return mainPage;
+			return "redirect:/user/main.do";
 		}
 
 		/*
