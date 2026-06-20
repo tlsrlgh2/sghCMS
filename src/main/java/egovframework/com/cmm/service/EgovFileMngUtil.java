@@ -121,7 +121,8 @@ public class EgovFileMngUtil {
 			String newName = keyStr + getTimeStamp() + fileKey;
 			long size = file.getSize();
 			String filePath = storePathString + File.separator + newName;
-			file.transferTo(new File(EgovWebUtil.filePathBlackList(filePath)));
+			File targetFile = new File(EgovWebUtil.filePathBlackList(filePath)).getAbsoluteFile();
+			file.transferTo(targetFile);
 
 			fvo = new FileVO();
 			fvo.setFileExtsn(fileExt);
