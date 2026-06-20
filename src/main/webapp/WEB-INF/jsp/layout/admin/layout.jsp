@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="sitemesh" uri="http://www.opensymphony.com/sitemesh/decorator" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
@@ -14,8 +13,9 @@
   <script src="${ctx}/coreui/js/config.js"></script>
   <script src="${ctx}/coreui/js/color-modes.js"></script>
   <sitemesh:write property="head"/>
+  <link rel="stylesheet" href="${ctx}/css/admin/admin.css">
 </head>
-<body>
+<body class="admin-shell">
   <div class="sidebar sidebar-dark sidebar-fixed border-end" id="sidebar">
     <div class="sidebar-header border-bottom">
       <div class="sidebar-brand me-auto">
@@ -34,9 +34,9 @@
   <div class="wrapper d-flex flex-column min-vh-100">
     <%@ include file="header.jsp" %>
     <div class="body flex-grow-1">
-      <div class="container-lg px-4">
+      <main class="container-fluid px-3 px-lg-4 py-4 admin-content">
         <sitemesh:write property="body"/>
-      </div>
+      </main>
     </div>
     <%@ include file="footer.jsp" %>
   </div>
