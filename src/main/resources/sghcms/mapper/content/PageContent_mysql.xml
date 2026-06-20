@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PageContent">
+
+    <select id="selectContent" parameterType="string"
+            resultType="sghcms.content.service.PageContentVO">
+        SELECT PAGE_KEY, PAGE_TITLE, CONTENT_HTML, UPDDE, UPDUSR
+        FROM SGH_PAGE_CONTENT
+        WHERE PAGE_KEY = #{pageKey}
+    </select>
+
+    <select id="selectAllContents"
+            resultType="sghcms.content.service.PageContentVO">
+        SELECT PAGE_KEY, PAGE_TITLE, CONTENT_HTML, UPDDE, UPDUSR
+        FROM SGH_PAGE_CONTENT
+        ORDER BY PAGE_KEY
+    </select>
+
+    <insert id="saveContent" parameterType="sghcms.content.service.PageContentVO">
+        INSERT INTO SGH_PAGE_CONTENT (PAGE_KEY, PAGE_TITLE, CONTENT_HTML, UPDUSR)
+        VALUES (#{pageKey}, #{pageTitle}, #{contentHtml}, #{updusr})
+        ON DUPLICATE KEY UPDATE
+            CONTENT_HTML = VALUES(CONTENT_HTML),
+            UPDUSR       = VALUES(UPDUSR)
+    </insert>
+
+</mapper>
