@@ -20,7 +20,7 @@ function fncGoAfterErrorPage(){
 <div style="width: 1000px; margin: 50px auto 50px;">
 	<p style="font-size: 18px; color: #000; margin-bottom: 10px; "><img src="<c:url value='/images/egovframework/com/cmm/er_logo.jpg' />" width="379" height="57" /></p>
 	<div style="border: ppx solid #666; padding: 20px;">
-		
+
 		<p style="color:red; margin-bottom: 8px; ">${pageTitle}<br /></p>
 
 		<div class="boxType1" style="width: 700px;">
@@ -28,6 +28,12 @@ function fncGoAfterErrorPage(){
 				<div class="error">
 					<p class="title"><spring:message code="comCmmErr.runtimeException.title" /></p><!-- 알 수 없는 오류가 발생했습니다! -->
 					<p class="cont mb20">${pageTitle}<br /></p>
+					<c:if test="${not empty exception}">
+					<p style="color:#c00;font-size:12px;text-align:left;padding:8px;background:#fff3f3;border:1px solid #fcc;margin-top:8px;word-break:break-all;">
+					  <%-- exception.message만 출력 (class는 EL 예약어라 직접 접근 불가) --%>
+					  ${exception.message}
+					</p>
+					</c:if>
 					<span class="btn_style1 blue"><a href="javascript:fncGoAfterErrorPage();"><spring:message code="comCmmErr.button" /><!-- 이전 페이지 --></a></span>
 				</div>
 			</div>
