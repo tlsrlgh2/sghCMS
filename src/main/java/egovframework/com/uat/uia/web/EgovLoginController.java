@@ -292,7 +292,9 @@ public class EgovLoginController {
 		}
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-		if (user.getIp().equals("")) {
+		System.out.println("user >> "+user);
+		
+		if (user.getIp() == null || user.getIp().equals("")) {
 			user.setIp(EgovClntInfo.getClntIP(request));
 		}
 
@@ -314,6 +316,7 @@ public class EgovLoginController {
 		// 3. 사용자 유형별 메인 페이지 분기
 		// USR(업무사용자) → 어드민 대시보드 / GNR(일반), ENT(기업) → 사용자 메인
 		String userSe = user.getUserSe();
+		System.out.println("userSe > > "+userSe);
 		if ("USR".equals(userSe)) {
 			return "redirect:/admin/dashboard.do";
 		} else {

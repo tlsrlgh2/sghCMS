@@ -100,6 +100,21 @@ public class LoginVO implements Serializable{
 		this.name = name;
 	}
 	/**
+	 * userName attribute 를 리턴한다.
+	 * JSP에서 sessionScope.loginVO.userName으로 사용자명을 조회하기 위한 별칭이다.
+	 * @return String
+	 */
+	public String getUserName() {
+		return name;
+	}
+	/**
+	 * userName attribute 값을 설정한다.
+	 * @param userName String
+	 */
+	public void setUserName(String userName) {
+		this.name = userName;
+	}
+	/**
 	 * ihidNum attribute 를 리턴한다.
 	 * @return String
 	 */
