@@ -32,11 +32,16 @@ public class PopupManageVO extends ComDefaultVO {
 	@Size(max = 1024)
 	private String popupTitleNm;
 	/**
-	 * 실파일 URL
+	 * 팝업 클릭 시 이동할 URL
 	 */
-	@EgovNullCheck
 	@Size(max = 1024)
 	private String fileUrl;
+
+	/** 팝업 이미지 첨부파일 ID */
+	private String imageFileId;
+
+	/** 팝업 이미지 원본 파일명 */
+	private String imageName;
 	/**
 	 * 팝업창이 화면에 보여지는 가로 위치정보
 	 */
@@ -140,6 +145,22 @@ public class PopupManageVO extends ComDefaultVO {
 
 	public void setFileUrl(String fileUrl) {
 		this.fileUrl = fileUrl;
+	}
+
+	public String getImageFileId() {
+		return imageFileId;
+	}
+
+	public void setImageFileId(String imageFileId) {
+		this.imageFileId = imageFileId;
+	}
+
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
 	}
 
 	public String getPopupWlc() {

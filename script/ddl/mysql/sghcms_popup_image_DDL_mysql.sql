@@ -1,0 +1,6 @@
+-- 기존 SGHCMS DB에 팝업 이미지 첨부 필드를 추가한다.
+-- 신규 DB는 com_DDL_mysql.sql에 이미 포함되어 있으므로 이 스크립트는 기존 DB에만 1회 적용한다.
+
+ALTER TABLE COMTNPOPUPMANAGE
+    ADD COLUMN IMAGE_FILE_ID CHAR(20) NULL AFTER FILE_URL,
+    ADD COLUMN IMAGE_NAME VARCHAR(255) NULL AFTER IMAGE_FILE_ID;

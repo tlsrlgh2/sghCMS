@@ -174,7 +174,7 @@ $(document).ready(function(){
 </head>
 <body>
 
-<form:form id="popupManageVO" modelAttribute="popupManageVO" method="post" >
+<form:form id="popupManageVO" modelAttribute="popupManageVO" method="post" enctype="multipart/form-data">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -194,9 +194,24 @@ $(document).ready(function(){
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="ussIonPwm.popupUpdt.fileUrl"/> <span class="pilsu">*</span></th><!-- 팝업창URL -->
+			<th>팝업 이미지</th>
 			<td class="left">
-			    <form:input path="fileUrl" size="73" cssClass="txaIpt" maxlength="255"/>
+				<c:if test="${not empty popupManageVO.imageFileId}">
+					<div class="admin-popup-image-preview">
+						<img src="<c:url value='/user/popup/image.do'><c:param name='popupId' value='${popupManageVO.popupId}'/></c:url>"
+							alt="<c:out value='${popupManageVO.popupTitleNm}'/>">
+						<span><c:out value="${popupManageVO.imageName}"/></span>
+					</div>
+				</c:if>
+				<input type="file" name="popupImage" id="popupImage" accept=".jpg,.jpeg,.png,.gif,image/jpeg,image/png,image/gif" />
+				<p class="admin-field-help">새 이미지를 선택한 경우에만 기존 이미지가 교체됩니다.</p>
+				<div><form:errors path="imageFileId" cssClass="error" /></div>
+			</td>
+		</tr>
+		<tr>
+			<th><spring:message code="ussIonPwm.popupUpdt.fileUrl"/></th><!-- 팝업창URL -->
+			<td class="left">
+			    <form:input path="fileUrl" size="73" cssClass="txaIpt" maxlength="1024" placeholder="이미지 클릭 시 이동할 URL (선택)"/>
       			<div><form:errors path="fileUrl" cssClass="error" /></div>
 			</td>
 		</tr>
@@ -265,6 +280,8 @@ $(document).ready(function(){
 
 <form:hidden path="ntceBgnde" />
 <form:hidden path="ntceEndde" />
+<form:hidden path="imageFileId" />
+<form:hidden path="imageName" />
 <input name="popupId" type="hidden" value="${popupManageVO.popupId}">
 <input name="cmd" type="hidden" value="<c:out value='save'/>"/>
 </form:form>

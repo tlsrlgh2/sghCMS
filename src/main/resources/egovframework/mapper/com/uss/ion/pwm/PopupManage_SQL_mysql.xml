@@ -12,6 +12,8 @@
 		<result property="popupId" column="POPUP_ID"/>
 		<result property="popupTitleNm" column="POPUP_SJ_NM"/>
 		<result property="fileUrl" column="FILE_URL"/>
+		<result property="imageFileId" column="IMAGE_FILE_ID"/>
+		<result property="imageName" column="IMAGE_NAME"/>
 		<result property="popupHlc" column="POPUP_VRTICL_LC"/>
 		<result property="popupWlc" column="POPUP_WIDTH_LC"/>
 		<result property="popupHSize" column="POPUP_VRTICL_SIZE"/>
@@ -33,6 +35,8 @@
 			A.POPUP_ID,
 			A.POPUP_SJ_NM	    POPUP_TITLE_NM,
 			A.FILE_URL,
+			A.IMAGE_FILE_ID,
+			A.IMAGE_NAME,
 			A.POPUP_VRTICL_LC,
 			A.POPUP_WIDTH_LC,
 			A.POPUP_VRTICL_SIZE,
@@ -46,6 +50,7 @@
 		FROM COMTNPOPUPMANAGE A
 			WHERE 1=1
 			AND A.NTCE_AT = 'Y'
+			AND A.IMAGE_FILE_ID IS NOT NULL
 			AND DATE_FORMAT(SYSDATE(),'%Y%m%d%H%i') >= NTCE_BGNDE
 			AND DATE_FORMAT(SYSDATE(),'%Y%m%d%H%i') <=  NTCE_ENDDE
 	 ]]>
@@ -67,6 +72,8 @@
 			A.POPUP_ID,
 			A.POPUP_SJ_NM		    POPUP_TITLE_NM,
 			A.FILE_URL,
+			A.IMAGE_FILE_ID,
+			A.IMAGE_NAME,
 			A.POPUP_VRTICL_LC,
 			A.POPUP_WIDTH_LC,
 			A.POPUP_VRTICL_SIZE,
@@ -129,6 +136,8 @@
 		SET
 		POPUP_SJ_NM=#{popupTitleNm},
 		FILE_URL=#{fileUrl},
+		IMAGE_FILE_ID=#{imageFileId},
+		IMAGE_NAME=#{imageName},
 		POPUP_VRTICL_LC=#{popupHlc},
 		POPUP_WIDTH_LC=#{popupWlc},
 		POPUP_VRTICL_SIZE=#{popupHSize},
@@ -149,6 +158,8 @@
 		A.POPUP_ID,
 		A.POPUP_SJ_NM,
 		A.FILE_URL,
+		A.IMAGE_FILE_ID,
+		A.IMAGE_NAME,
 		A.POPUP_VRTICL_LC,
 		A.POPUP_WIDTH_LC,
 		A.POPUP_VRTICL_SIZE,
@@ -174,6 +185,8 @@
 		POPUP_ID,
 		POPUP_SJ_NM,
 		FILE_URL,
+		IMAGE_FILE_ID,
+		IMAGE_NAME,
 		POPUP_VRTICL_LC,
 		POPUP_WIDTH_LC,
 		POPUP_VRTICL_SIZE,
@@ -190,6 +203,8 @@
 		#{popupId},
 		#{popupTitleNm},
 		#{fileUrl},
+		#{imageFileId},
+		#{imageName},
 		#{popupHlc},
 		#{popupWlc},
 		#{popupHSize},

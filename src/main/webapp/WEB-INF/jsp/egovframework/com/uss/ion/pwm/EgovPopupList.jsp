@@ -182,7 +182,7 @@ function fnGetCookie(name) {
 <div class="board">
 <form name="listForm" action="<c:url value='/uss/ion/pwm/listPopup.do'/>" method="post">
 	<h1><spring:message code="ussIonPwm.popupList.popupList"/></h1><!-- 팝업창관리 목록 -->
-	<span><spring:message code="ussIonPwm.popupList.guide"/> </span>
+	<p class="admin-page-guide">게시 상태가 사용이고 게시 기간에 포함된 팝업은 사용자 메인에 레이어 팝업으로 노출됩니다.</p>
 
 	<div class="search_box" title="<spring:message code="common.noScriptTitle.msg"/>"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
@@ -195,7 +195,6 @@ function fnGetCookie(name) {
 				<input class="s_input2 vat" name="searchKeyword" type="text" value="<c:out value='${popupManageVO.searchKeyword}'/>" size="10" onkeypress="press();" title="<spring:message code="input.input"/>" /><!-- 검색단어입력 -->
 				
 				
-				<span class="btn_b"><a href="" onclick="fn_egov_view_PopupManage(); return false;" title="새창 열림"><spring:message code="button.preview"/></a></span><!-- 미리보기 -->
 				<input class="s_btn" type="submit" value="<spring:message code="button.inquire" />" title="<spring:message code="button.inquire" />" onclick="fn_egov_search_PopupManage(); return false;" />
 				<span class="btn_b"><a href="<c:url value='/uss/ion/pwm/insertPopupView.do'/>" onclick="" title="<spring:message code="button.create" />"><spring:message code="button.create" /></a></span>
 			</li>
@@ -208,11 +207,11 @@ function fnGetCookie(name) {
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>
-			<col style="width:10%" />
-			<col style="width:10%" />
-			<col style="width:20%" />
+			<col style="width:8%" />
+			<col style="width:7%" />
 			<col style="width:25%" />
-			<col style="width:25%" />
+			<col style="width:32%" />
+			<col style="width:18%" />
 			<col style="width:10%" />
 		</colgroup>
 		<thead>
@@ -221,7 +220,7 @@ function fnGetCookie(name) {
 			   <th scope="col"><input type="checkbox" name="checkAll" id="checkAll" class="check2" value="1" onClick="fn_egov_checkAll_PopupManage();"/></th>
 			   <th scope="col"><spring:message code="ussIonPwm.popupList.popupTitleNm"/></th><!-- 제목 -->
 			   <th scope="col"><spring:message code="ussIonPwm.popupList.ntcePeriod"/></th><!-- 게시기간 -->
-			   <th scope="col"><spring:message code="ussIonPwm.popupList.fileUrl"/></th><!-- 파일 -->
+			   <th scope="col">이미지</th>
 			   <th scope="col"><spring:message code="ussIonPwm.popupList.ntceAt"/></th><!-- 게시상태 -->
 			</tr>
 		</thead>
@@ -234,18 +233,23 @@ function fnGetCookie(name) {
 					<input type="checkbox" name="checkList" id="checkList" class="check2" value="${resultInfo.popupId}"/>
 				</td>
 				<td>
-					<form name="subForm" method="post" action="<c:url value='/uss/ion/pwm/detailPopup.do'/>">
-						<input name="popupId" type="hidden" value="${resultInfo.popupId}">
-						<input name="pageIndex" type="hidden" value="<c:out value='${popupManageVO.pageIndex}'/>"/>
-						<span class="link"><input type="submit" style="width:200px;text-align:left;" value="<c:out value="${resultInfo.popupTitleNm}"/>" onclick="fn_egov_detail_PopupManage('${resultInfo.popupId}'); return false;"></span>
-					</form>
+					<button type="button" class="admin-table-link"
+						onclick="fn_egov_detail_PopupManage('<c:out value="${resultInfo.popupId}"/>')">
+						<c:out value="${resultInfo.popupTitleNm}"/>
+					</button>
 				</td>
 				<td>
 					<c:out value="${fn:substring(resultInfo.ntceBgnde, 0, 4)}"/>-<c:out value="${fn:substring(resultInfo.ntceBgnde, 4, 6)}"/>-<c:out value="${fn:substring(resultInfo.ntceBgnde, 6, 8)}"/> <c:out value="${fn:substring(resultInfo.ntceBgnde, 8, 10)}"/>H <c:out value="${fn:substring(resultInfo.ntceBgnde, 10, 12)}"/>M
 					~
 					<c:out value="${fn:substring(resultInfo.ntceEndde, 0, 4)}"/>-<c:out value="${fn:substring(resultInfo.ntceEndde, 4, 6)}"/>-<c:out value="${fn:substring(resultInfo.ntceEndde, 6, 8)}"/> <c:out value="${fn:substring(resultInfo.ntceEndde, 8, 10)}"/>H <c:out value="${fn:substring(resultInfo.ntceEndde, 10, 12)}"/>M
 				<td>
-					<c:out value="${resultInfo.fileUrl}"/>
+					<c:choose>
+						<c:when test="${not empty resultInfo.imageFileId}">
+							<a class="admin-image-link" href="<c:url value='/user/popup/image.do'><c:param name='popupId' value='${resultInfo.popupId}'/></c:url>"
+								target="_blank" rel="noopener">이미지 보기</a>
+						</c:when>
+						<c:otherwise><span class="text-body-secondary">미등록</span></c:otherwise>
+					</c:choose>
 				</td>
 				<td>
 					<c:out value="${resultInfo.ntceAt}"/>

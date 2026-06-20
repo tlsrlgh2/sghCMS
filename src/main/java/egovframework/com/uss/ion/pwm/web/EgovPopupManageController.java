@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
@@ -17,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
@@ -24,6 +26,9 @@ import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.EgovFileMngService;
+import egovframework.com.cmm.service.EgovFileMngUtil;
+import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.pwm.service.EgovPopupManageService;
 import egovframework.com.uss.ion.pwm.service.PopupManageVO;
@@ -74,6 +79,15 @@ public class EgovPopupManageController {
 	/** EgovPopupManageService */
 	@Resource(name = "egovPopupManageService")
 	private EgovPopupManageService egovPopupManageService;
+
+	@Resource(name = "EgovFileMngService")
+	private EgovFileMngService fileMngService;
+
+	@Resource(name = "EgovFileMngUtil")
+	private EgovFileMngUtil fileUtil;
+
+	private static final Set<String> POPUP_IMAGE_EXTENSIONS = Set.of("jpg", "jpeg", "png", "gif");
+	private static final long POPUP_IMAGE_MAX_SIZE = 10L * 1024L * 1024L;
 
 	/**
 	 * 팝업창관리 목록을 조회한다.
@@ -223,7 +237,9 @@ public class EgovPopupManageController {
 	@RequestMapping(value = "/uss/ion/pwm/updtPopup.do")
 	public String egovPopupManageUpdt(@RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("popupManageVO") PopupManageVO popupManageVO,
-			BindingResult bindingResult, ModelMap model) throws Exception {
+			BindingResult bindingResult,
+			@RequestParam(value = "popupImage", required = false) MultipartFile popupImage,
+			ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -250,6 +266,14 @@ public class EgovPopupManageController {
 		if (sCmd.equals("save")) {
 			sLocationUrl = "forward:/uss/ion/pwm/listPopup.do";
 
+			PopupManageVO storedPopup = egovPopupManageService.selectPopup(popupManageVO);
+			if (storedPopup != null) {
+				popupManageVO.setImageFileId(storedPopup.getImageFileId());
+				popupManageVO.setImageName(storedPopup.getImageName());
+			}
+			if (!bindingResult.hasErrors()) {
+				applyPopupImage(popupManageVO, popupImage, bindingResult, false);
+			}
 			if (bindingResult.hasErrors()) {
 				model.addAttribute("popupManageVO", popupManageVO);
 				return "egovframework/com/uss/ion/pwm/EgovPopupUpdt";
@@ -290,7 +314,10 @@ public class EgovPopupManageController {
 	 */
 	@RequestMapping(value = "/uss/ion/pwm/registPopup.do")
 	public String egovPopupManageRegist(@RequestParam Map<?, ?> commandMap,
-			@Valid @ModelAttribute("popupManageVO") PopupManageVO popupManageVO, BindingResult bindingResult, ModelMap model)
+			@Valid @ModelAttribute("popupManageVO") PopupManageVO popupManageVO,
+			BindingResult bindingResult,
+			@RequestParam(value = "popupImage", required = false) MultipartFile popupImage,
+			ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -309,6 +336,9 @@ public class EgovPopupManageController {
 
 		if (sCmd.equals("save")) {
 
+			if (!bindingResult.hasErrors()) {
+				applyPopupImage(popupManageVO, popupImage, bindingResult, true);
+			}
 			if (bindingResult.hasErrors()) {
 				model.addAttribute("popupManageVO", popupManageVO);
 				model.addAttribute("ntceBgndeHH", getTimeHH());
@@ -336,6 +366,42 @@ public class EgovPopupManageController {
 		model.addAttribute("ntceEnddeMM", getTimeMM());
 
 		return sLocationUrl;
+	}
+
+	private void applyPopupImage(PopupManageVO popupManageVO, MultipartFile popupImage,
+			BindingResult bindingResult, boolean required) throws Exception {
+		if (popupImage == null || popupImage.isEmpty()) {
+			if (required && (popupManageVO.getImageFileId() == null || popupManageVO.getImageFileId().isBlank())) {
+				bindingResult.rejectValue("imageFileId", "popup.image.required", "팝업 이미지를 등록해 주세요.");
+			}
+			return;
+		}
+
+		String originalFilename = popupImage.getOriginalFilename();
+		String extension = "";
+		if (originalFilename != null && originalFilename.lastIndexOf('.') >= 0) {
+			extension = originalFilename.substring(originalFilename.lastIndexOf('.') + 1).toLowerCase();
+		}
+		if (!POPUP_IMAGE_EXTENSIONS.contains(extension)) {
+			bindingResult.rejectValue("imageFileId", "popup.image.extension",
+					"JPG, PNG, GIF 이미지만 등록할 수 있습니다.");
+			return;
+		}
+		if (popupImage.getSize() > POPUP_IMAGE_MAX_SIZE) {
+			bindingResult.rejectValue("imageFileId", "popup.image.size", "이미지는 10MB 이하만 등록할 수 있습니다.");
+			return;
+		}
+
+		Map<String, MultipartFile> files = new HashMap<>();
+		files.put("popupImage", popupImage);
+		List<FileVO> fileList = fileUtil.parseFileInf(files, "PWM_", 0, "", "");
+		if (fileList.isEmpty()) {
+			bindingResult.rejectValue("imageFileId", "popup.image.upload", "이미지 저장에 실패했습니다.");
+			return;
+		}
+
+		popupManageVO.setImageFileId(fileMngService.insertFileInfs(fileList));
+		popupManageVO.setImageName(fileList.get(0).getOrignlFileNm());
 	}
 
 	/**

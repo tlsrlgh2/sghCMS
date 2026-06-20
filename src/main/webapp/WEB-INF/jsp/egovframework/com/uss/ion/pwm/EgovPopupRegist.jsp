@@ -170,7 +170,7 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-<form:form id="popupManageVO" modelAttribute="popupManageVO" method="post" >
+<form:form id="popupManageVO" modelAttribute="popupManageVO" method="post" enctype="multipart/form-data">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -190,9 +190,17 @@ $(document).ready(function(){
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="ussIonPwm.popupRegist.fileUrl"/> <span class="pilsu">*</span></th><!-- 팝업창URL -->
+			<th>팝업 이미지 <span class="pilsu">*</span></th>
 			<td class="left">
-				<form:input path="fileUrl" maxlength="255"/>
+				<input type="file" name="popupImage" id="popupImage" accept=".jpg,.jpeg,.png,.gif,image/jpeg,image/png,image/gif" />
+				<p class="admin-field-help">JPG, PNG, GIF / 최대 10MB. 권장 크기 720 × 900px</p>
+				<div><form:errors path="imageFileId" cssClass="error" /></div>
+			</td>
+		</tr>
+		<tr>
+			<th><spring:message code="ussIonPwm.popupRegist.fileUrl"/></th><!-- 팝업창URL -->
+			<td class="left">
+				<form:input path="fileUrl" maxlength="1024" placeholder="이미지 클릭 시 이동할 URL (선택)"/>
 				<div><form:errors path="fileUrl" cssClass="error" /></div>
 			</td>
 		</tr>
@@ -262,6 +270,8 @@ $(document).ready(function(){
 
 <form:hidden path="ntceBgnde" />
 <form:hidden path="ntceEndde" />
+<form:hidden path="imageFileId" />
+<form:hidden path="imageName" />
 <input name="cmd" type="hidden" value="<c:out value='save'/>"/>
 </form:form>
 

@@ -78,7 +78,22 @@ function fn_egov_delete_PopupManage(){
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="ussIonPwm.popupDetail.fileUrl"/> <span class="pilsu">*</span></th><!-- 팝업창URL -->
+			<th>팝업 이미지</th>
+			<td class="left">
+				<c:choose>
+					<c:when test="${not empty popupManageVO.imageFileId}">
+						<div class="admin-popup-image-preview">
+							<img src="<c:url value='/user/popup/image.do'><c:param name='popupId' value='${popupManageVO.popupId}'/></c:url>"
+								alt="<c:out value='${popupManageVO.popupTitleNm}'/>">
+							<span><c:out value="${popupManageVO.imageName}"/></span>
+						</div>
+					</c:when>
+					<c:otherwise>등록된 이미지가 없습니다.</c:otherwise>
+				</c:choose>
+			</td>
+		</tr>
+		<tr>
+			<th><spring:message code="ussIonPwm.popupDetail.fileUrl"/></th><!-- 팝업창URL -->
 			<td class="left">
 			    <c:out value="${popupManageVO.fileUrl}" />
 			</td>
