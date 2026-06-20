@@ -22,12 +22,21 @@ html {
 body {
   margin: 0;
   overflow-x: hidden;
+  /* sticky footer: 콘텐츠가 짧아도 푸터를 화면 하단에 고정 */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   color: var(--youth-body);
   background: #fff;
   font-family: Pretendard, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
   font-size: 16px;
   line-height: 1.6;
   word-break: keep-all;
+}
+
+/* 본문이 남은 높이를 채워 푸터를 아래로 밀어냄 */
+#main-content {
+  flex: 1 0 auto;
 }
 
 a {
