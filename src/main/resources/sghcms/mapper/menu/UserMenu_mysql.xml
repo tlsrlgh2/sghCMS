@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserMenu">
+
+    <resultMap id="userMenuMap" type="sghcms.menu.service.UserMenu">
+        <id     property="menuId"          column="MENU_ID"/>
+        <result property="menuNm"          column="MENU_NM"/>
+        <result property="menuType"        column="MENU_TYPE"/>
+        <result property="urlPath"         column="URL_PATH"/>
+        <result property="linkedKey"       column="LINKED_KEY"/>
+        <result property="upperId"         column="UPPER_ID"/>
+        <result property="sortOrdr"        column="SORT_ORDR"/>
+        <result property="useAt"           column="USE_AT"/>
+        <result property="frstRegistPnttm" column="FRST_REGIST_PNTTM"/>
+        <result property="frstRegisterId"  column="FRST_REGISTER_ID"/>
+        <result property="lastUpdtPnttm"   column="LAST_UPDT_PNTTM"/>
+        <result property="lastUpdusrId"    column="LAST_UPDUSR_ID"/>
+    </resultMap>
+
+    <sql id="columns">
+        MENU_ID, MENU_NM, MENU_TYPE, URL_PATH, LINKED_KEY, UPPER_ID, SORT_ORDR, USE_AT,
+        FRST_REGIST_PNTTM, FRST_REGISTER_ID, LAST_UPDT_PNTTM, LAST_UPDUSR_ID
+    </sql>
+
+    <select id="selectMenuList" resultMap="userMenuMap">
+        SELECT <include refid="columns"/>
+        FROM SGH_USER_MENU
+        ORDER BY UPPER_ID, SORT_ORDR, MENU_ID
+    </select>
+
+    <select id="selectVisibleMenuList" resultMap="userMenuMap">
+        SELECT <include refid="columns"/>
+        FROM SGH_USER_MENU
+        WHERE USE_AT = 'Y'
+        ORDER BY UPPER_ID, SORT_ORDR, MENU_ID
+    </select>
+
+    <select id="selectMenu" parameterType="long" resultMap="userMenuMap">
+        SELECT <include refid="columns"/>
+        FROM SGH_USER_MENU
+        WHERE MENU_ID = #{menuId}
+    </select>
+
+    <select id="selectVisibleByUrlPath" parameterType="string" resultMap="userMenuMap">
+        SELECT <include refid="columns"/>
+        FROM SGH_USER_MENU
+        WHERE USE_AT = 'Y'
+          AND URL_PATH = #{urlPath}
+        LIMIT 1
+    </select>
+
+    <select id="countByUrlPath" parameterType="sghcms.menu.service.UserMenu" resultType="int">
+        SELECT COUNT(*)
+        FROM SGH_USER_MENU
+        WHERE URL_PATH = #{urlPath}
+        <if test="menuId != null">
+          AND MENU_ID &lt;&gt; #{menuId}
+        </if>
+    </select>
+
+    <select id="countChildren" parameterType="long" resultType="int">
+        SELECT COUNT(*)
+        FROM SGH_USER_MENU
+        WHERE UPPER_ID = #{menuId}
+    </select>
+
+    <insert id="insertMenu" parameterType="sghcms.menu.service.UserMenu"
+            useGeneratedKeys="true" keyProperty="menuId">
+        INSERT INTO SGH_USER_MENU
+            (MENU_NM, MENU_TYPE, URL_PATH, LINKED_KEY, UPPER_ID, SORT_ORDR, USE_AT, FRST_REGISTER_ID, LAST_UPDUSR_ID)
+        VALUES
+            (#{menuNm}, #{menuType}, #{urlPath}, #{linkedKey}, #{upperId}, #{sortOrdr}, #{useAt}, #{frstRegisterId}, #{lastUpdusrId})
+    </insert>
+
+    <update id="updateMenu" parameterType="sghcms.menu.service.UserMenu">
+        UPDATE SGH_USER_MENU
+        SET MENU_NM        = #{menuNm},
+            MENU_TYPE      = #{menuType},
+            URL_PATH       = #{urlPath},
+            LINKED_KEY     = #{linkedKey},
+            UPPER_ID       = #{upperId},
+            SORT_ORDR      = #{sortOrdr},
+            USE_AT         = #{useAt},
+            LAST_UPDUSR_ID = #{lastUpdusrId}
+        WHERE MENU_ID = #{menuId}
+    </update>
+
+    <delete id="deleteMenu" parameterType="long">
+        DELETE FROM SGH_USER_MENU
+        WHERE MENU_ID = #{menuId}
+    </delete>
+
+</mapper>

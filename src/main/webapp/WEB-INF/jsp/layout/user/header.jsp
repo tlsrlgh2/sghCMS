@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
 <a class="skip-link" href="#main-content">본문 바로가기</a>
@@ -41,6 +42,45 @@
       </button>
 
       <div class="collapse navbar-collapse" id="userMainNav">
+        <c:choose>
+          <%-- DB 기반 사용자 메뉴(관리자 사용자 메뉴관리에서 등록)가 있으면 우선 사용 --%>
+          <c:when test="${not empty userMenuTree}">
+            <ul class="navbar-nav user-menu-list mx-xl-auto">
+              <c:forEach var="top" items="${userMenuTree}">
+                <c:set var="topHref">
+                  <c:choose>
+                    <c:when test="${not empty top.urlPath}">${ctx}/user/page/${top.urlPath}.do</c:when>
+                    <c:otherwise>#</c:otherwise>
+                  </c:choose>
+                </c:set>
+                <c:choose>
+                  <c:when test="${not empty top.children}">
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="${fn:trim(topHref)}"
+                         role="button" data-bs-toggle="dropdown" aria-expanded="false"><c:out value="${top.menuNm}"/></a>
+                      <ul class="dropdown-menu">
+                        <c:forEach var="child" items="${top.children}">
+                          <li>
+                            <a class="dropdown-item"
+                               href="<c:choose><c:when test='${not empty child.urlPath}'>${ctx}/user/page/${child.urlPath}.do</c:when><c:otherwise>#</c:otherwise></c:choose>">
+                              <c:out value="${child.menuNm}"/>
+                            </a>
+                          </li>
+                        </c:forEach>
+                      </ul>
+                    </li>
+                  </c:when>
+                  <c:otherwise>
+                    <li class="nav-item">
+                      <a class="nav-link" href="${fn:trim(topHref)}"><c:out value="${top.menuNm}"/></a>
+                    </li>
+                  </c:otherwise>
+                </c:choose>
+              </c:forEach>
+            </ul>
+          </c:when>
+          <%-- 등록된 사용자 메뉴가 없으면 기존 정적 메뉴로 폴백 --%>
+          <c:otherwise>
         <ul class="navbar-nav user-menu-list mx-xl-auto">
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="${ctx}/user/about/intro.do"
@@ -92,6 +132,8 @@
             </ul>
           </li>
         </ul>
+          </c:otherwise>
+        </c:choose>
 
         <div class="header-actions">
           <button class="header-icon-btn" type="button" data-bs-toggle="collapse"

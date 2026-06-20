@@ -50,11 +50,15 @@
 	<bean id="adminMenuInterceptor" class="sghcms.admin.web.AdminMenuInterceptor">
 		<property name="adminMenuService" ref="adminMenuService"/>
 	</bean>
+	<bean id="userMenuInterceptor" class="sghcms.menu.web.UserMenuInterceptor">
+		<property name="userMenuService" ref="userMenuService"/>
+	</bean>
 
 	<mvc:interceptors>
 		<ref bean="localeChangeInterceptor"/>
 		<ref bean="egovWebLogInterceptor"/>
 		<ref bean="adminMenuInterceptor"/>
+		<ref bean="userMenuInterceptor"/>
 	</mvc:interceptors>
 
 	<!-- IP 정보 기록 및 로그인 체크가 필요한 URL과 로그인 여부를 체크해줄 인터셉터를 등록한다. -->

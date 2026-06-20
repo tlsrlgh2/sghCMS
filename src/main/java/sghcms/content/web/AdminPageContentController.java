@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import egovframework.com.cmm.LoginVO;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import sghcms.cmm.HtmlTagFilterDecoder;
 import sghcms.content.service.PageContentService;
 import sghcms.content.service.PageContentVO;
 
@@ -67,6 +68,8 @@ public class AdminPageContentController {
         if (loginVO != null) {
             vo.setUpdusr(loginVO.getId());
         }
+        // HTMLTagFilter 가 *.do 파라미터를 인코딩하므로 본문을 원복 후 저장(서비스에서 새니타이즈).
+        vo.setContentHtml(HtmlTagFilterDecoder.decode(vo.getContentHtml()));
         pageContentService.savePageContent(vo);
         return "redirect:/admin/content/pageContent/edit.do?pageKey=" + vo.getPageKey() + "&saved=true";
     }

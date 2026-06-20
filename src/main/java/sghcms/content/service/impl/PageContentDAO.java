@@ -21,4 +21,8 @@ public class PageContentDAO extends EgovComAbstractDAO {
     public void savePageContent(PageContentVO vo) {
         insert("PageContent.saveContent", vo);
     }
+
+    public void deletePageContent(String pageKey) {
+        delete("PageContent.deleteContent", pageKey);
+    }
 }

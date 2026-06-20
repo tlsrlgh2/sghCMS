@@ -27,4 +27,9 @@
             UPDDE        = NOW()
     </insert>
 
+    <delete id="deleteContent" parameterType="string">
+        DELETE FROM SGH_PAGE_CONTENT
+        WHERE PAGE_KEY = #{pageKey}
+    </delete>
+
 </mapper>

@@ -38,4 +38,12 @@ public class PageContentServiceImpl implements PageContentService {
         vo.setContentHtml(CONTENT_POLICY.sanitize(vo.getContentHtml()));
         pageContentDAO.savePageContent(vo);
     }
+
+    @Override
+    public void deletePageContent(String pageKey) {
+        if (pageKey == null || pageKey.isBlank()) {
+            return;
+        }
+        pageContentDAO.deletePageContent(pageKey);
+    }
 }
