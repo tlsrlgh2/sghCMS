@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <!-- Tomcat 10.1 기본값이 false라 WEB-INF/classes 스캔 안 됨.
+         EgovWebApplicationInitializer(WebApplicationInitializer 구현체)를 찾으려면 true 필요. -->
+    <JarScanner scanClassPath="true"/>
+</Context>

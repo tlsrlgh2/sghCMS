@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemesh>
+    <decorator-prefix>/WEB-INF/jsp/layout/</decorator-prefix>
+
     <!-- 어드민 레이아웃 -->
-    <mapping path="/admin/*" decorator="/WEB-INF/jsp/layout/admin/layout.jsp"/>
+    <mapping path="/admin/*" decorator="admin/layout.jsp"/>
+    <mapping path="/cop/bbs/*" decorator="admin/layout.jsp"/>
+    <mapping path="/uss/umt/*" decorator="admin/layout.jsp"/>
+    <mapping path="/uss/ion/bnr/*" decorator="admin/layout.jsp"/>
+    <mapping path="/uss/ion/pwm/*" decorator="admin/layout.jsp"/>
+    <mapping path="/uss/olh/faq/*" decorator="admin/layout.jsp"/>
+    <mapping path="/uss/olh/qna/*" decorator="admin/layout.jsp"/>
+    <mapping path="/uss/ion/sit/*" decorator="admin/layout.jsp"/>
+    <mapping path="/uss/sam/stp/*" decorator="admin/layout.jsp"/>
+    <mapping path="/sym/mnu/*" decorator="admin/layout.jsp"/>
+    <mapping path="/sym/prm/*" decorator="admin/layout.jsp"/>
+    <mapping path="/sym/ccm/*" decorator="admin/layout.jsp"/>
+    <mapping path="/sec/*" decorator="admin/layout.jsp"/>
+    <mapping path="/uat/uap/*" decorator="admin/layout.jsp"/>
+    <mapping path="/sts/*" decorator="admin/layout.jsp"/>
+    <mapping path="/sym/log/*" decorator="admin/layout.jsp"/>
 
     <!-- 사용자 레이아웃 -->
-    <mapping path="/user/*"  decorator="/WEB-INF/jsp/layout/user/layout.jsp"/>
+    <mapping path="/user/*"  decorator="user/layout.jsp"/>
 
     <!-- 레이아웃 제외 경로 (로그인, 에러, Ajax 등) -->
     <mapping path="/uat/uia/*" exclude="true"/>
