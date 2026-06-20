@@ -145,6 +145,9 @@ body.admin-shell {
   width: 100%;
   max-width: 1600px;
   margin: 0 auto;
+  /* 헤더/푸터와 본문 사이 간격 (레이아웃의 py-4 유틸리티보다 우선) */
+  padding-top: 2.25rem !important;
+  padding-bottom: 3rem !important;
   color: var(--sgh-admin-text);
   font-family: inherit;
   font-size: 0.875rem;

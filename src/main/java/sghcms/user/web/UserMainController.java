@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.service.EgovFileMngService;
+import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.service.FileVO;
-import egovframework.com.cmm.service.Globals;
 import egovframework.com.uss.ion.pwm.service.EgovPopupManageService;
 import egovframework.com.uss.ion.pwm.service.PopupManageVO;
 import jakarta.annotation.Resource;
@@ -74,7 +74,7 @@ public class UserMainController {
      */
     private Path resolveStorePath(FileVO file) {
         try {
-            Path storePath = Path.of(Globals.fileStorePath).toAbsolutePath().normalize();
+            Path storePath = Path.of(EgovProperties.getProperty("Globals.fileStorePath")).toAbsolutePath().normalize();
             Path imagePath = Path.of(file.getFileStreCours(), file.getStreFileNm())
                     .toAbsolutePath().normalize();
             if (!imagePath.startsWith(storePath)) {
