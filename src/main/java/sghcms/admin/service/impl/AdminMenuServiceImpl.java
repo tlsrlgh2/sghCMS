@@ -3,7 +3,6 @@ package sghcms.admin.service.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Service;
@@ -63,30 +62,6 @@ public class AdminMenuServiceImpl implements AdminMenuService {
 
         rootMenu.sortChildren();
         return rootMenu.getChildren();
-    }
-
-    @Override
-    public Optional<AdminMenu> findAccessibleMenu(LoginVO loginVO, int menuNo) throws Exception {
-        for (AdminMenu menu : selectAdminMenuTree(loginVO)) {
-            Optional<AdminMenu> foundMenu = findMenu(menu, menuNo);
-            if (foundMenu.isPresent()) {
-                return foundMenu;
-            }
-        }
-        return Optional.empty();
-    }
-
-    private Optional<AdminMenu> findMenu(AdminMenu menu, int menuNo) {
-        if (menu.getMenuNo() == menuNo) {
-            return Optional.of(menu);
-        }
-        for (AdminMenu child : menu.getChildren()) {
-            Optional<AdminMenu> foundMenu = findMenu(child, menuNo);
-            if (foundMenu.isPresent()) {
-                return foundMenu;
-            }
-        }
-        return Optional.empty();
     }
 
     private int intValue(Object value) {

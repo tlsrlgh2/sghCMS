@@ -1,5 +1,6 @@
 package sghcms.admin.web;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
@@ -7,38 +8,64 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import egovframework.com.cmm.LoginVO;
-import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import sghcms.admin.service.AdminMenu;
-import sghcms.admin.service.AdminMenuService;
 
 @Controller
 @RequestMapping("/admin/cms")
 public class AdminCmsController {
 
-    private static final String CURRENT_MENU_SESSION_KEY = "currentAdminMenuNo";
-
-    @Resource(name = "adminMenuService")
-    private AdminMenuService adminMenuService;
-
     @GetMapping("/open.do")
-    public String openMenu(@RequestParam("menuNo") int menuNo, HttpServletRequest request) throws Exception {
-        LoginVO loginVO = (LoginVO) request.getSession().getAttribute("loginVO");
-        Optional<AdminMenu> accessibleMenu = adminMenuService.findAccessibleMenu(loginVO, menuNo);
+    public String openMenu(@RequestParam("menuNo") int menuNo, HttpServletRequest request) {
+        @SuppressWarnings("unchecked")
+        List<AdminMenu> menuTree = (List<AdminMenu>) request.getAttribute("adminMenuTree");
+
+        Optional<AdminMenu> accessibleMenu = findInTree(
+                menuTree != null ? menuTree : List.of(), menuNo);
 
         if (accessibleMenu.isEmpty() || accessibleMenu.get().isFolder()) {
             return "redirect:/admin/dashboard.do";
         }
 
         String targetUrl = accessibleMenu.get().getUrl();
-        boolean isSghAdminContent = targetUrl.startsWith("/admin/content/");
-        if (!targetUrl.startsWith("/") || !targetUrl.endsWith(".do")
-                || (targetUrl.startsWith("/admin/") && !isSghAdminContent)) {
-            throw new IllegalArgumentException("허용되지 않은 관리자 메뉴 URL입니다.");
+        if (!isAllowedMenuUrl(targetUrl)) {
+            return "redirect:/admin/dashboard.do";
         }
 
-        request.getSession().setAttribute(CURRENT_MENU_SESSION_KEY, menuNo);
+        request.getSession().setAttribute(AdminMenuInterceptor.CURRENT_MENU_SESSION_KEY, menuNo);
         return "forward:" + targetUrl;
+    }
+
+    private boolean isAllowedMenuUrl(String url) {
+        if (!url.startsWith("/") || !url.endsWith(".do")) {
+            return false;
+        }
+        if (url.startsWith("/admin/")) {
+            return url.startsWith("/admin/content/");
+        }
+        return true;
+    }
+
+    private Optional<AdminMenu> findInTree(List<AdminMenu> tree, int menuNo) {
+        for (AdminMenu menu : tree) {
+            Optional<AdminMenu> found = findMenu(menu, menuNo);
+            if (found.isPresent()) {
+                return found;
+            }
+        }
+        return Optional.empty();
+    }
+
+    private Optional<AdminMenu> findMenu(AdminMenu menu, int menuNo) {
+        if (menu.getMenuNo() == menuNo) {
+            return Optional.of(menu);
+        }
+        for (AdminMenu child : menu.getChildren()) {
+            Optional<AdminMenu> found = findMenu(child, menuNo);
+            if (found.isPresent()) {
+                return found;
+            }
+        }
+        return Optional.empty();
     }
 }

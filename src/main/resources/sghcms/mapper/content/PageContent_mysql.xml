@@ -18,11 +18,13 @@
     </select>
 
     <insert id="saveContent" parameterType="sghcms.content.service.PageContentVO">
-        INSERT INTO SGH_PAGE_CONTENT (PAGE_KEY, PAGE_TITLE, CONTENT_HTML, UPDUSR)
-        VALUES (#{pageKey}, #{pageTitle}, #{contentHtml}, #{updusr})
+        INSERT INTO SGH_PAGE_CONTENT (PAGE_KEY, PAGE_TITLE, CONTENT_HTML, UPDUSR, UPDDE)
+        VALUES (#{pageKey}, #{pageTitle}, #{contentHtml}, #{updusr}, NOW())
         ON DUPLICATE KEY UPDATE
+            PAGE_TITLE   = VALUES(PAGE_TITLE),
             CONTENT_HTML = VALUES(CONTENT_HTML),
-            UPDUSR       = VALUES(UPDUSR)
+            UPDUSR       = VALUES(UPDUSR),
+            UPDDE        = NOW()
     </insert>
 
 </mapper>

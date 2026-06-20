@@ -572,6 +572,13 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.18.0</version>
 		</dependency>
+
+		<!-- HTML Sanitizer: CMS 에디터 출력물의 XSS 방어 -->
+		<dependency>
+			<groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
+			<artifactId>owasp-java-html-sanitizer</artifactId>
+			<version>20240325.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>

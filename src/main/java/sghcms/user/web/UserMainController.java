@@ -2,6 +2,7 @@ package sghcms.user.web;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
+import egovframework.com.cmm.service.Globals;
 import egovframework.com.uss.ion.pwm.service.EgovPopupManageService;
 import egovframework.com.uss.ion.pwm.service.PopupManageVO;
 import jakarta.annotation.Resource;
@@ -52,8 +54,8 @@ public class UserMainController {
             return;
         }
 
-        Path imagePath = Path.of(file.getFileStreCours(), file.getStreFileNm()).normalize();
-        if (!Files.isRegularFile(imagePath)) {
+        Path imagePath = resolveStorePath(file);
+        if (imagePath == null || !Files.isRegularFile(imagePath)) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
@@ -64,5 +66,23 @@ public class UserMainController {
         response.setContentLengthLong(Files.size(imagePath));
         response.setHeader("Cache-Control", "public, max-age=3600");
         Files.copy(imagePath, response.getOutputStream());
+    }
+
+    /**
+     * DB에 저장된 경로가 fileStorePath 내부인지 검증 후 Path를 반환한다.
+     * 경로 이탈이 감지되면 null을 반환한다.
+     */
+    private Path resolveStorePath(FileVO file) {
+        try {
+            Path storePath = Path.of(Globals.fileStorePath).toAbsolutePath().normalize();
+            Path imagePath = Path.of(file.getFileStreCours(), file.getStreFileNm())
+                    .toAbsolutePath().normalize();
+            if (!imagePath.startsWith(storePath)) {
+                return null;
+            }
+            return imagePath;
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

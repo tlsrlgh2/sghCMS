@@ -14,7 +14,7 @@ import sghcms.admin.service.AdminMenuService;
 public class AdminMenuInterceptor implements HandlerInterceptor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminMenuInterceptor.class);
-    private static final String CURRENT_MENU_SESSION_KEY = "currentAdminMenuNo";
+    static final String CURRENT_MENU_SESSION_KEY = "currentAdminMenuNo";
     private static final String[] ADMIN_PATH_PREFIXES = {
             "/admin/",
             "/cop/bbs/",
