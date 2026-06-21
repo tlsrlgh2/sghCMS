@@ -53,12 +53,16 @@
 	<bean id="userMenuInterceptor" class="sghcms.menu.web.UserMenuInterceptor">
 		<property name="userMenuService" ref="userMenuService"/>
 	</bean>
+	<bean id="boardConfigInterceptor" class="sghcms.board.web.BoardConfigInterceptor">
+		<property name="boardConfigService" ref="boardConfigService"/>
+	</bean>
 
 	<mvc:interceptors>
 		<ref bean="localeChangeInterceptor"/>
 		<ref bean="egovWebLogInterceptor"/>
 		<ref bean="adminMenuInterceptor"/>
 		<ref bean="userMenuInterceptor"/>
+		<ref bean="boardConfigInterceptor"/>
 	</mvc:interceptors>
 
 	<!-- IP 정보 기록 및 로그인 체크가 필요한 URL과 로그인 여부를 체크해줄 인터셉터를 등록한다. -->
@@ -79,9 +83,11 @@
 	<!-- for JFile -->
 	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="0"/>
 
-	<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="1"
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:order="1"
+		p:contentType="text/html;charset=UTF-8"
 		p:viewClass="org.springframework.web.servlet.view.JstlView"
-		p:prefix="/WEB-INF/jsp/" p:suffix=".jsp"/>
+		p:prefix="/WEB-INF/jsp/" p:suffix=".jsp"
+		p:alwaysInclude="true"/>
 
 	<bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
 		<property name="contentType" value="application/json;charset=UTF-8"/>

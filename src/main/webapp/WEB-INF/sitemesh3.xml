@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemesh>
     <decorator-prefix>/WEB-INF/jsp/layout/</decorator-prefix>
+    <!-- Tomcat 11의 forward 응답 커밋을 피해서 decorator 결과를 버퍼에 유지한다. -->
+    <dispatch-mode>include</dispatch-mode>
 
     <!-- 어드민 레이아웃 -->
     <mapping path="/admin/*" decorator="admin/layout.jsp"/>
