@@ -73,6 +73,10 @@ public class UserBoardController {
     @Resource(name = "userBoardService")
     private UserBoardService userBoardService;
 
+    private LoginVO currentUser() {
+        return (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+    }
+
     // -------------------------------------------------------------------------
     // 열람
     // -------------------------------------------------------------------------
@@ -143,10 +147,8 @@ public class UserBoardController {
 
         // 본인 글만 접근 설정인 경우 — 비로그인 또는 타인이면 목록으로 차단
         if (boardConfig != null && "Y".equals(boardConfig.getOwnPostOnlyAt())) {
-            LoginVO loginUser = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-            Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-            if (!isAuthenticated || loginUser == null
-                    || !loginUser.getUniqId().equals(detail.getFrstRegisterId())) {
+            LoginVO loginUser = currentUser();
+            if (loginUser == null || !loginUser.getUniqId().equals(detail.getFrstRegisterId())) {
                 return "redirect:/user/board/list.do?bbsId=" + boardVO.getBbsId();
             }
         }
@@ -164,10 +166,8 @@ public class UserBoardController {
         }
 
         // 현재 로그인 사용자가 작성자인지 여부를 JSP에 전달
-        LoginVO loginUser = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-        boolean isOwner = isAuthenticated && loginUser != null
-                && loginUser.getUniqId().equals(detail.getFrstRegisterId());
+        LoginVO loginUser = currentUser();
+        boolean isOwner = loginUser != null && loginUser.getUniqId().equals(detail.getFrstRegisterId());
 
         model.addAttribute("menu", menuOpt.get());
         model.addAttribute("boardMasterVO", master);
@@ -197,9 +197,8 @@ public class UserBoardController {
             return "redirect:/user/board/list.do?bbsId=" + boardVO.getBbsId();
         }
 
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-        if (!isAuthenticated) {
-            return "redirect:/uat/uia/egovLoginUsr.do";
+        if (!EgovUserDetailsHelper.isAuthenticated()) {
+            return "redirect:/user/login.do";
         }
 
         BoardMasterVO masterParam = new BoardMasterVO();
@@ -232,10 +231,9 @@ public class UserBoardController {
             return "redirect:/user/board/list.do?bbsId=" + boardVO.getBbsId();
         }
 
-        LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-        if (!isAuthenticated || user == null) {
-            return "redirect:/uat/uia/egovLoginUsr.do";
+        LoginVO user = currentUser();
+        if (user == null) {
+            return "redirect:/user/login.do";
         }
 
         board.setBbsId(boardVO.getBbsId());
@@ -266,10 +264,9 @@ public class UserBoardController {
             return "redirect:/user/board/list.do?bbsId=" + boardVO.getBbsId();
         }
 
-        LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-        if (!isAuthenticated || user == null) {
-            return "redirect:/uat/uia/egovLoginUsr.do";
+        LoginVO user = currentUser();
+        if (user == null) {
+            return "redirect:/user/login.do";
         }
 
         BoardVO detail = articleService.selectArticleDetail(boardVO);
@@ -312,10 +309,9 @@ public class UserBoardController {
             return "redirect:/user/board/list.do?bbsId=" + boardVO.getBbsId();
         }
 
-        LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-        if (!isAuthenticated || user == null) {
-            return "redirect:/uat/uia/egovLoginUsr.do";
+        LoginVO user = currentUser();
+        if (user == null) {
+            return "redirect:/user/login.do";
         }
 
         // 원본 작성자 재확인 (파라미터 위변조 방지)
@@ -352,10 +348,9 @@ public class UserBoardController {
             return "redirect:/user/main.do";
         }
 
-        LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-        if (!isAuthenticated || user == null) {
-            return "redirect:/uat/uia/egovLoginUsr.do";
+        LoginVO user = currentUser();
+        if (user == null) {
+            return "redirect:/user/login.do";
         }
 
         // 원본 작성자 재확인 (파라미터 위변조 방지)
@@ -389,9 +384,8 @@ public class UserBoardController {
             return Map.of("canAccess", true);
         }
 
-        LoginVO loginUser = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-        if (!isAuthenticated || loginUser == null) {
+        LoginVO loginUser = currentUser();
+        if (loginUser == null) {
             return Map.of("canAccess", false);
         }
 

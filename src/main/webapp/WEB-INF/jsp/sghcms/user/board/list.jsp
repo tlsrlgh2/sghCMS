@@ -21,7 +21,7 @@
           </c:when>
           <c:otherwise>
             <button type="button" class="btn btn-primary btn-sm"
-                    onclick="if(confirm('로그인이 필요합니다.\n로그인 페이지로 이동하시겠습니까?')){location.href='${ctx}/uat/uia/egovLoginUsr.do';}">글쓰기</button>
+                    onclick="if(confirm('로그인이 필요합니다.\n로그인 페이지로 이동하시겠습니까?')){location.href='${ctx}/user/login.do';}">글쓰기</button>
           </c:otherwise>
         </c:choose>
       </c:if>
