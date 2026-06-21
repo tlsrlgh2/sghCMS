@@ -89,7 +89,7 @@ public class UserFindAccountController {
         // 이메일 발송 (메일 서버 미설정 시 예외 무시)
         try {
             SndngMailVO mail = new SndngMailVO();
-            mail.setDsptchPerson("webmaster");
+            mail.setDsptchPerson("tlsrlgh23");
             mail.setRecptnPerson(foundEmail);
             mail.setSj("[SGH청년공간] 임시 비밀번호를 발송했습니다.");
             mail.setEmailCn("고객님의 임시 비밀번호는 " + newPwStr + " 입니다.\n로그인 후 반드시 비밀번호를 변경해 주세요.");
