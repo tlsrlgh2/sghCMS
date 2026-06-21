@@ -40,9 +40,6 @@ public class AdminCmsController {
         if (!url.startsWith("/") || !url.endsWith(".do")) {
             return false;
         }
-        if (url.startsWith("/admin/")) {
-            return url.startsWith("/admin/content/");
-        }
         return true;
     }
 
