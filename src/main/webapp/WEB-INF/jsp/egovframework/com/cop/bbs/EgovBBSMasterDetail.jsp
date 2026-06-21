@@ -117,6 +117,7 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="title.update" /> <spring:message code="input.button" />" /><!-- 수정 -->
+		<input type="button" class="s_submit" value="<spring:message code="button.delete" />" title="<spring:message code="title.delete" /> <spring:message code="input.button" />" onclick="fn_egov_delete_bbs('${result.bbsId}')" /><!-- 삭제 -->
 		<span class="btn_s"><a href="<c:url value='/cop/bbs/selectBBSMasterInfs.do' /><c:if test='${result.cmmntyId != null}'>?cmmntyId=${result.cmmntyId}</c:if>"  title="<spring:message code="title.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span><!-- 목록 -->
 	</div><div style="clear:both;"></div>
 	
