@@ -10,8 +10,21 @@
 <body>
 <section class="user-page-section user-board">
   <div class="container">
-    <header class="user-page-heading">
+    <header class="user-page-heading d-flex align-items-center justify-content-between">
       <h1><c:out value="${boardTitle}"/></h1>
+      <%-- 사용자 작성 허용 게시판이면 글쓰기 버튼 노출 --%>
+      <c:if test="${boardConfig.userWriteAt eq 'Y'}">
+        <c:choose>
+          <c:when test="${isAuthenticated}">
+            <a href="${ctx}/user/board/write.do?bbsId=${boardMasterVO.bbsId}"
+               class="btn btn-primary btn-sm">글쓰기</a>
+          </c:when>
+          <c:otherwise>
+            <button type="button" class="btn btn-primary btn-sm"
+                    onclick="if(confirm('로그인이 필요합니다.\n로그인 페이지로 이동하시겠습니까?')){location.href='${ctx}/uat/uia/egovLoginUsr.do';}">글쓰기</button>
+          </c:otherwise>
+        </c:choose>
+      </c:if>
     </header>
 
     <div class="table-responsive">
@@ -32,7 +45,8 @@
             <tr class="board-notice-row">
               <td><span class="badge text-bg-primary">공지</span></td>
               <td class="text-start">
-                <a href="${ctx}/user/board/view.do?bbsId=${boardMasterVO.bbsId}&nttId=${notice.nttId}&pageIndex=${searchVO.pageIndex}">
+                <a href="${ctx}/user/board/view.do?bbsId=${boardMasterVO.bbsId}&nttId=${notice.nttId}&pageIndex=${searchVO.pageIndex}"
+                   onclick="return handleViewClick(event, '${boardMasterVO.bbsId}', '${notice.nttId}', '${searchVO.pageIndex}')">
                   <c:out value="${notice.nttSj}"/>
                 </a>
               </td>
@@ -49,7 +63,8 @@
             <tr>
               <td><c:out value="${listNo}"/></td>
               <td class="text-start">
-                <a href="${ctx}/user/board/view.do?bbsId=${boardMasterVO.bbsId}&nttId=${row.nttId}&pageIndex=${searchVO.pageIndex}">
+                <a href="${ctx}/user/board/view.do?bbsId=${boardMasterVO.bbsId}&nttId=${row.nttId}&pageIndex=${searchVO.pageIndex}"
+                   onclick="return handleViewClick(event, '${boardMasterVO.bbsId}', '${row.nttId}', '${searchVO.pageIndex}')">
                   <c:out value="${row.nttSj}"/>
                 </a>
               </td>
@@ -92,5 +107,27 @@
     </c:if>
   </div>
 </section>
+<script>
+var _ctx = '${ctx}';
+var _ownPostOnly = ${boardConfig.ownPostOnlyAt eq 'Y'};
+
+function handleViewClick(event, bbsId, nttId, pageIndex) {
+    if (!_ownPostOnly) return true;
+    event.preventDefault();
+    fetch(_ctx + '/user/board/checkAccess.do?bbsId=' + encodeURIComponent(bbsId) + '&nttId=' + encodeURIComponent(nttId))
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.canAccess) {
+                location.href = _ctx + '/user/board/view.do?bbsId=' + bbsId + '&nttId=' + nttId + '&pageIndex=' + pageIndex;
+            } else {
+                alert('본인 글만 확인할 수 있습니다.');
+            }
+        })
+        .catch(function() {
+            location.href = _ctx + '/user/board/view.do?bbsId=' + bbsId + '&nttId=' + nttId + '&pageIndex=' + pageIndex;
+        });
+    return false;
+}
+</script>
 </body>
 </html>
