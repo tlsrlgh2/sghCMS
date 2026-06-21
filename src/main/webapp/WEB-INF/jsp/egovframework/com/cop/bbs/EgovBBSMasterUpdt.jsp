@@ -218,10 +218,34 @@ function fn_egov_inqire_bbslist() {
 					<form:option value="Y"  label="예" />
 	  		   		<form:option value='N'>아니오</form:option>
 				</form:select>
-				<div><form:errors path="useAt" cssClass="error" /></div>       
+				<div><form:errors path="useAt" cssClass="error" /></div>
 			</td>
 		</tr>
-		
+
+		<!-- 사용자 작성 허용 -->
+		<tr>
+			<th><label for="userWriteAt">사용자 작성 허용</label></th>
+			<td class="left">
+				<select id="userWriteAt" name="userWriteAt" class="txt" title="사용자 작성 허용 여부">
+					<option value="N" ${boardConfig.userWriteAt ne 'Y' ? 'selected="selected"' : ''}>미허용</option>
+					<option value="Y" ${boardConfig.userWriteAt eq 'Y' ? 'selected="selected"' : ''}>허용</option>
+				</select>
+				<span style="color:#888; margin-left:6px; font-size:0.85em;">허용 시 로그인 사용자가 사용자 페이지에서 글을 작성할 수 있습니다.</span>
+			</td>
+		</tr>
+
+		<!-- 본인 글만 접근 -->
+		<tr>
+			<th><label for="ownPostOnlyAt">본인 글만 접근</label></th>
+			<td class="left">
+				<select id="ownPostOnlyAt" name="ownPostOnlyAt" class="txt" title="본인 글만 접근 허용 여부">
+					<option value="N" ${boardConfig.ownPostOnlyAt ne 'Y' ? 'selected="selected"' : ''}>전체 공개</option>
+					<option value="Y" ${boardConfig.ownPostOnlyAt eq 'Y' ? 'selected="selected"' : ''}>본인만</option>
+				</select>
+				<span style="color:#888; margin-left:6px; font-size:0.85em;">본인만 설정 시 상세·수정·삭제를 작성자 본인만 할 수 있습니다.</span>
+			</td>
+		</tr>
+
 	</tbody>
 	</table>
 

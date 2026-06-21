@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BoardConfig">
+
+    <resultMap id="boardConfigResult" type="sghcms.board.service.BoardConfigVO">
+        <result property="bbsId"         column="BBS_ID"/>
+        <result property="bbsNm"         column="BBS_NM"/>
+        <result property="userWriteAt"   column="USER_WRITE_AT"/>
+        <result property="ownPostOnlyAt" column="OWN_POST_ONLY_AT"/>
+    </resultMap>
+
+    <select id="selectBoardConfigList" resultMap="boardConfigResult">
+        SELECT BBS_ID, BBS_NM, USER_WRITE_AT, OWN_POST_ONLY_AT
+        FROM COMTNBBSMASTER
+        ORDER BY FRST_REGIST_PNTTM DESC
+    </select>
+
+    <select id="selectBoardConfig" parameterType="sghcms.board.service.BoardConfigVO" resultMap="boardConfigResult">
+        SELECT BBS_ID, BBS_NM, USER_WRITE_AT, OWN_POST_ONLY_AT
+        FROM COMTNBBSMASTER
+        WHERE BBS_ID = #{bbsId}
+    </select>
+
+    <update id="updateBoardConfig" parameterType="sghcms.board.service.BoardConfigVO">
+        UPDATE COMTNBBSMASTER
+        SET USER_WRITE_AT    = #{userWriteAt},
+            OWN_POST_ONLY_AT = #{ownPostOnlyAt}
+        WHERE BBS_ID = #{bbsId}
+    </update>
+
+</mapper>
