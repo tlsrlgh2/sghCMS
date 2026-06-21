@@ -14,7 +14,7 @@
         <a href="${ctx}/user/mypage.do">마이페이지</a>
       </c:when>
       <c:otherwise>
-        <a href="${ctx}/uat/uia/egovLoginUsr.do">로그인</a>
+        <a href="${ctx}/user/login.do">로그인</a>
         <a href="${ctx}/user/join.do">회원가입</a>
       </c:otherwise>
     </c:choose>
