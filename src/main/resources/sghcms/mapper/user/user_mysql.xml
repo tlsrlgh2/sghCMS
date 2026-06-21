@@ -10,6 +10,18 @@
         WHERE MBER_ID = #{mberId}
     </select>
 
+    <!-- 사용자 페이지 회원은 가입 즉시 Spring Security ROLE_USER 권한을 부여한다. -->
+    <insert id="insertDefaultUserAuthority" parameterType="string">
+        INSERT INTO COMTNEMPLYRSCRTYESTBS
+            (SCRTY_DTRMN_TRGET_ID, MBER_TY_CODE, AUTHOR_CODE)
+        SELECT ESNTL_ID, 'USR01', 'ROLE_USER'
+        FROM COMTNGNRLMBER
+        WHERE MBER_ID = #{mberId}
+        ON DUPLICATE KEY UPDATE
+            MBER_TY_CODE = VALUES(MBER_TY_CODE),
+            AUTHOR_CODE = VALUES(AUTHOR_CODE)
+    </insert>
+
     <!-- 힌트 없이 아이디+이름+이메일로 활성 회원 이메일 조회 (비밀번호 찾기용) -->
     <select id="findEmailByMberInfo" parameterType="map" resultType="string">
         SELECT MBER_EMAIL_ADRES

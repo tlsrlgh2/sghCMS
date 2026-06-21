@@ -15,6 +15,10 @@ public class UserJoinDAO extends EgovComAbstractDAO {
         return cnt != null && cnt > 0;
     }
 
+    public void insertDefaultUserAuthority(String mberId) {
+        insert("userJoinDAO.insertDefaultUserAuthority", mberId);
+    }
+
     public String findEmailByMberInfo(String mberId, String mberNm, String email) {
         Map<String, String> param = new HashMap<>();
         param.put("mberId", mberId);
