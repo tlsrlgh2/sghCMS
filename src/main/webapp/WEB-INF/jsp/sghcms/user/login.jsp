@@ -38,6 +38,13 @@
       <div class="login-card-desc">SGH 청년공간 회원 서비스를 이용하세요</div>
     </div>
 
+    <c:if test="${not empty joinSuccess}">
+      <div class="login-success">
+        <i class="bi bi-check-circle-fill"></i>
+        회원가입이 완료되었습니다. 로그인해 주세요.
+      </div>
+    </c:if>
+
     <c:if test="${not empty loginError}">
       <div class="login-error">
         <i class="bi bi-exclamation-circle-fill"></i>
@@ -45,10 +52,8 @@
       </div>
     </c:if>
 
-    <form id="userLoginForm" action="${ctx}/uat/uia/actionLogin.do" method="post"
+    <form id="userLoginForm" action="${ctx}/user/loginAction.do" method="post"
           onsubmit="return validateUserLogin()">
-      <input type="hidden" name="userSe"   value="GNR"/>
-      <input type="hidden" name="loginType" value="user"/>
 
       <div class="login-field">
         <label for="userId">아이디</label>
@@ -74,7 +79,7 @@
     <div class="login-links">
       <a href="${ctx}/user/join.do">회원가입</a>
       <span>|</span>
-      <a href="${ctx}/uat/uia/egovIdPasswordSearch.do">아이디 / 비밀번호 찾기</a>
+      <a href="${ctx}/user/findAccount.do">아이디 / 비밀번호 찾기</a>
     </div>
 
     <div class="login-footer-note">

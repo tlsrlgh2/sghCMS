@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="userJoinDAO">
+
+    <select id="countByMberId" parameterType="string" resultType="int">
+        SELECT COUNT(1)
+        FROM COMTNGNRLMBER
+        WHERE MBER_ID = #{mberId}
+    </select>
+
+    <!-- 힌트 없이 아이디+이름+이메일로 활성 회원 이메일 조회 (비밀번호 찾기용) -->
+    <select id="findEmailByMberInfo" parameterType="map" resultType="string">
+        SELECT MBER_EMAIL_ADRES
+        FROM COMTNGNRLMBER
+        WHERE MBER_ID        = #{mberId}
+          AND MBER_NM        = #{mberNm}
+          AND MBER_EMAIL_ADRES = #{email}
+          AND MBER_STTUS     = 'P'
+    </select>
+
+    <!-- 임시 비밀번호 업데이트 -->
+    <update id="updateMberPassword" parameterType="map">
+        UPDATE COMTNGNRLMBER
+        SET PASSWORD             = #{password},
+            CHG_PWD_LAST_PNTTM  = sysdate()
+        WHERE MBER_ID = #{mberId}
+    </update>
+
+</mapper>

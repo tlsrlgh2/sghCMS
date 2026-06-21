@@ -10,7 +10,7 @@
     <c:choose>
       <c:when test="${not empty sessionScope.loginVO}">
         <span class="util-welcome">${sessionScope.loginVO.userName}님</span>
-        <a href="${ctx}/uat/uia/actionLogout.do">로그아웃</a>
+        <a href="${ctx}/user/logout.do">로그아웃</a>
         <a href="${ctx}/user/mypage.do">마이페이지</a>
       </c:when>
       <c:otherwise>

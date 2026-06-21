@@ -27,6 +27,9 @@
 
     <!-- 레이아웃 제외 경로 (로그인, 에러, Ajax 등) -->
     <mapping path="/uat/uia/*" exclude="true"/>
-    <mapping path="/user/login.do" exclude="true"/>
-    <mapping path="/cmm/error/*" exclude="true"/>
+    <mapping path="/user/login.do"      exclude="true"/>
+    <mapping path="/user/loginAction.do" exclude="true"/>
+    <mapping path="/user/logout.do"      exclude="true"/>
+    <mapping path="/user/checkId.do"     exclude="true"/>
+    <mapping path="/cmm/error/*"         exclude="true"/>
 </sitemesh>

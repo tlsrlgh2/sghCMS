@@ -2,21 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
-<%
-    /* 사용자 로그인 폼에서 실패 시 이 페이지로 forward됨.
-       loginType=user 이면 사용자 로그인 페이지로 redirect. */
-    String loginType = request.getParameter("loginType");
-    Object loginMsg  = request.getAttribute("loginMessage");
-    if ("user".equals(loginType) && loginMsg != null) {
-        response.sendRedirect(request.getContextPath()
-            + "/user/login.do?error=true");
-        return;
-    }
-    if ("user".equals(loginType)) {
-        response.sendRedirect(request.getContextPath() + "/user/login.do");
-        return;
-    }
-%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>

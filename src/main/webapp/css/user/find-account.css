@@ -1,0 +1,147 @@
+@charset "UTF-8";
+
+.find-section {
+  padding: 60px 0 80px;
+  background: var(--youth-bg, #f7f7fb);
+  min-height: calc(100vh - 200px);
+}
+
+.find-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(102, 88, 217, .08);
+  padding: 48px 52px 44px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.find-card-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #222233;
+  margin-bottom: 28px;
+}
+
+/* ── 탭 ── */
+.find-tabs {
+  display: flex;
+  border-bottom: 2px solid #e7e7ef;
+  margin-bottom: 32px;
+}
+
+.find-tab-btn {
+  flex: 1;
+  padding: 10px 0;
+  background: none;
+  border: none;
+  font-size: .95rem;
+  font-weight: 600;
+  color: #aaaacc;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color .2s, border-color .2s;
+}
+
+.find-tab-btn.active {
+  color: #6658d9;
+  border-bottom-color: #6658d9;
+}
+
+/* ── 탭 패널 ── */
+.find-tab-panel { display: none; }
+.find-tab-panel.active { display: block; }
+
+/* ── 필드 ── */
+.find-field {
+  margin-bottom: 18px;
+}
+
+.find-field label {
+  display: block;
+  font-size: .82rem;
+  font-weight: 600;
+  color: #555566;
+  margin-bottom: 7px;
+}
+
+.find-field input,
+.find-field select {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid #e0e0ee;
+  border-radius: 10px;
+  font-size: .95rem;
+  color: #222233;
+  background: #f9f9fc;
+  outline: none;
+  transition: border-color .2s;
+}
+
+.find-field input:focus,
+.find-field select:focus {
+  border-color: #6658d9;
+  background: #fff;
+}
+
+.find-field input::placeholder { color: #c0c0d8; }
+
+/* ── 결과 영역 ── */
+.find-result {
+  padding: 18px 20px;
+  border-radius: 10px;
+  font-size: .9rem;
+  margin-bottom: 20px;
+}
+
+.find-result.success {
+  background: #f0fff8;
+  border: 1px solid #b2efd4;
+  color: #1a7a4a;
+}
+
+.find-result.error {
+  background: #fff2f2;
+  border: 1px solid #ffd0d0;
+  color: #cc3333;
+}
+
+.find-result strong {
+  font-size: 1.1rem;
+  display: block;
+  margin-top: 6px;
+}
+
+/* ── 제출 버튼 ── */
+.btn-find-submit {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  background: linear-gradient(135deg, #6658d9 0%, #7a6ee8 100%);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: opacity .2s;
+}
+
+.btn-find-submit:hover { opacity: .88; }
+
+.find-back-link {
+  text-align: center;
+  margin-top: 24px;
+  font-size: .85rem;
+}
+
+.find-back-link a {
+  color: #6658d9;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .find-card { padding: 32px 20px 28px; }
+}

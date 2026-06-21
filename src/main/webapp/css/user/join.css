@@ -1,0 +1,159 @@
+@charset "UTF-8";
+
+/* 회원가입 페이지 — user layout 위에 올라타는 스타일 */
+
+.join-section {
+  padding: 60px 0 80px;
+  background: var(--youth-bg, #f7f7fb);
+  min-height: calc(100vh - 200px);
+}
+
+.join-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(102, 88, 217, .08);
+  padding: 48px 52px 44px;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.join-card-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #222233;
+  margin-bottom: 6px;
+}
+
+.join-card-desc {
+  font-size: .88rem;
+  color: #8888aa;
+  margin-bottom: 36px;
+}
+
+/* ── 필드 ── */
+.join-field {
+  margin-bottom: 20px;
+}
+
+.join-field label {
+  display: block;
+  font-size: .82rem;
+  font-weight: 600;
+  color: #555566;
+  margin-bottom: 7px;
+}
+
+.join-field label .req {
+  color: #6658d9;
+  margin-left: 2px;
+}
+
+.input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.input-row input { flex: 1; }
+
+.join-field input[type="text"],
+.join-field input[type="password"],
+.join-field input[type="email"],
+.join-field input[type="tel"] {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid #e0e0ee;
+  border-radius: 10px;
+  font-size: .95rem;
+  color: #222233;
+  background: #f9f9fc;
+  outline: none;
+  transition: border-color .2s, background .2s;
+}
+
+.join-field input:focus {
+  border-color: #6658d9;
+  background: #fff;
+}
+
+.join-field input::placeholder { color: #c0c0d8; }
+
+.join-field input.is-invalid { border-color: #e03535; }
+
+/* ── 아이디 중복 확인 버튼 ── */
+.btn-check-id {
+  padding: 11px 16px;
+  background: #fff;
+  border: 1.5px solid #6658d9;
+  border-radius: 10px;
+  color: #6658d9;
+  font-size: .85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background .2s;
+}
+
+.btn-check-id:hover { background: #f0eeff; }
+
+/* ── 피드백 메시지 ── */
+.field-feedback {
+  font-size: .78rem;
+  margin-top: 5px;
+}
+
+.field-feedback.error  { color: #e03535; }
+.field-feedback.ok     { color: #1a7a4a; }
+
+/* ── 구분선 ── */
+.join-divider {
+  border: none;
+  border-top: 1px solid #f0f0f8;
+  margin: 28px 0;
+}
+
+/* ── 제출 버튼 ── */
+.btn-join-submit {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #6658d9 0%, #7a6ee8 100%);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity .2s;
+  letter-spacing: .3px;
+}
+
+.btn-join-submit:hover { opacity: .88; }
+
+.join-login-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: .85rem;
+  color: #8888aa;
+}
+
+.join-login-link a {
+  color: #6658d9;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* 서버 측 필드 에러 */
+.field-error-list {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0;
+}
+
+.field-error-list li {
+  font-size: .78rem;
+  color: #e03535;
+}
+
+@media (max-width: 600px) {
+  .join-card { padding: 32px 20px 28px; }
+}
